@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+
+import Stays from "./components/Stays";
+import Search from "./components/Search";
+import { currentCity, currentGuest } from "./components/Search";
 
 function App() {
+  const [form, setForm] = useState(false);
+  const [filter, setFilter] = useState(false);
+  const showForm = () => {
+    return !form ? setForm(true) : setForm(false);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+      <Search
+        showForm={showForm}
+        form={form}
+        showResults={() => {
+          setForm(false);
+          setFilter(true);
+          //console.log(currentCity, currentGuest);
+        }}
+      />
+      {!form && !filter ? (
+        <Stays filterOut={false} />
+      ) : filter ? (
+        <Stays filterOut={true} city={currentCity} guest={currentGuest} />
+      ) : null}
     </div>
   );
 }
-
 export default App;
